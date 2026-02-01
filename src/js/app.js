@@ -5,7 +5,11 @@ import { initPersistent, initPage } from './main.js';
 
 // --- Global State ---
 let currentPageCleanup = null;
-const pageModules = import.meta.glob(['../*.js', '../*/*.js']);
+const pageModules = import.meta.glob([
+    '../*.js', 
+    '../*/*.js',
+    '!./main.js'
+]);
 initPersistent();
 
 // --- Mount/Unmount Logic ---

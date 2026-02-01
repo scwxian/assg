@@ -1,3 +1,5 @@
+[![AI Coauthored](https://img.shields.io/badge/AI_Coauthored-↗_see_context-58a6ff?style=flat)](https://coauthored.dev/#v:1;o:~Y29hdXRob3JlZC5kZXY;created:2026-01-29;scope:project;intent:prod;traj:evolve;ai:code,debug,doc;tools:~R2VtaW5pIFBybw;review:full,ran;strengths:arch,backend;confident:arch,perf;limits:bugs,edge;env:external;data:none;valid:e2e,perf,sec;focus:code,security,edge)
+
 # Static Site Boilerplate Template
 
 This is a simple boilerplate for a multi-page static website boilerplate that uses [swup.js](https://swup.js.org/) for seamless page transitions and built using Vite.

@@ -1,6 +1,7 @@
 archive/*
 site-analytics/*
 .env*
+src/.temp/
 
 # Node/Vite files
 /node_modules

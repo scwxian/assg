@@ -25,6 +25,14 @@
   --standard-border-radius: 6px;  
   --border-width: 1px;
 
+  /* Font Sizes */
+  --h1-fs: 3rem;
+  --h2-fs: 2.25rem;
+  --h3-fs: 1.75rem;
+  --h4-fs: 1.5rem;
+  --h5-fs: 1.25rem;
+  --h6-fs: 1rem;
+
   /* Font Weights */
   --body-font-weight: 400;
   --bold-font-weight: 600;

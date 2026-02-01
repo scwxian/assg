@@ -46,6 +46,32 @@ export function initPersistent() {
     // --- Modules ---
 
     // --- Core Functions ---
+    // Global Data Imoprter for both yaml and json
+    const rawData = import.meta.glob('../assets/data/*.{json,yaml}', {
+        eager: true,
+        query: '?url',
+        import: 'default'
+    });
+
+    const dataRegistry = Object.keys(rawData).reduce((acc, path) => {
+        const lookupKey = path;
+        const finalUrl = rawData[path].replace(/\.yaml$/, '.json');
+        acc[lookupKey] = finalUrl;
+        return acc;
+    }, {});
+
+    window.getDataUrl = (filename) => {
+        const lookupKey = `../assets/data/${filename}`;
+        const finalUrl = dataRegistry[lookupKey];
+
+        if (!finalUrl) {
+            console.warn(`[Global Data] File "${filename}" not found in src/assets/data/.`);
+            console.debug('Available data files:', Object.keys(dataRegistry));
+            return null;
+        }
+        return finalUrl;
+    };
+
     // Updates the copyright year in the footer.
     if (yearText) { yearText.textContent = new Date().getFullYear(); }
 

@@ -1,5 +1,5 @@
 'use strict'
-
+import "../../css/modules/stat-bars.css";
 import { initTooltips } from '../utils.js';
 
 const statDescriptions = {

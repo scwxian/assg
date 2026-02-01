@@ -9,6 +9,7 @@ import injectHTML from 'vite-plugin-html-inject'
 // Custom Plugins
 import { getHtmlEntries } from './custom-vite-plugins/html-entry-finder.js';
 import { faqBuilderPlugin } from './custom-vite-plugins/faq-builder-plugin.js'
+import { yamlToJson } from "./custom-vite-plugins/yaml-to-json.js";
 
 function htmlBaseUrlReplacer(env) {
   return {
@@ -44,6 +45,7 @@ export default defineConfig(({ mode }) => {
     envDir: '../',
     publicDir: '../public',
     plugins: [
+      yamlToJson(),
       faqBuilderPlugin(),
       injectHTML(),
       htmlBaseUrlReplacer(env),
@@ -54,6 +56,7 @@ export default defineConfig(({ mode }) => {
     server: {
       watch: {
         usePolling: true,
+        ignored: ['**/src/.temp/**']
       }
     },
     esbuild: {

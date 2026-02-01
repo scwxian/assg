@@ -1,0 +1,117 @@
+/* AGENDA TIMELINE UTIL */
+/* Remove default list styling */
+.agenda-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Space between agenda items */
+}
+
+.agenda-item {
+  display: grid;
+  /* Col 1: Fixed width for time (approx 100px is usually safe)
+     Col 2: The rest of the space for content
+  */
+  grid-template-columns: 110px 1fr;
+  gap: 1.5rem;
+  align-items: baseline; /* Aligns text tops perfectly */
+  padding: 1rem;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+/* Optional: Hover effect to make it feel interactive */
+.agenda-item:hover {
+  background-color: rgba(0, 0, 0, 0.03); /* Very subtle grey */
+}
+
+/* --- THE TIME COLUMN --- */
+.agenda-time {
+  text-align: right; /* Keeps times flush against the content */
+  flex-shrink: 0;
+}
+
+.agenda-time time {
+  font-family: monospace, serif; /* Monospace makes numbers line up beautifully */
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-light, #666); /* Use your variable here */
+  display: block;
+  letter-spacing: -0.5px;
+}
+
+/* --- THE CONTENT COLUMN --- */
+.agenda-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem; /* Small space between Title and Speaker */
+  border-left: 2px solid #eee; /* The "Timeline" line */
+  padding-left: 1.5rem;
+}
+
+.agenda-item:hover .agenda-content {
+  border-left-color: #333; /* Darkens line on hover for effect */
+}
+
+.agenda-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.agenda-desc {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 0.25rem 0 0.5rem 0; /* spacing between title and host */
+  line-height: 1.4;
+}
+
+.agenda-host {
+  font-size: 0.9rem;
+  margin: 0;
+  color: var(--text-light, #666);
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* Optional: Add a label before the host name if you want */
+.agenda-host::before {
+  content: "Host: ";
+  font-style: normal;
+  opacity: 0.7;
+}
+
+.agenda-message {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-light, #666);
+  font-style: italic;
+  list-style: none;
+}
+
+.agenda-message.error {
+  color: var(--code)
+}
+
+/* Mobile Tweak: Stack them if screen is very narrow */
+@media (max-width: 480px) {
+  .agenda-item {
+    grid-template-columns: 1fr; /* Stack vertically */
+    gap: 0.5rem;
+  }
+
+  .agenda-time {
+    text-align: left;
+  }
+
+  .agenda-content {
+    border-left: none; /* Remove line on mobile */
+    padding-left: 0;
+    border-top: 2px solid #eee; /* Move line to top */
+    padding-top: 0.5rem;
+  }
+}
+

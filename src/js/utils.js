@@ -1,4 +1,6 @@
 'use strict';
+ 
+import "../css/modules/timeline.css";
 
 // accordion animations handler
 export function initAccordionAnimations(parentElement = document) {
@@ -161,3 +163,4 @@ export function initTooltips(parentElement = document) {
 
     return { clickOutsideHandler, tooltip };
 }
+
