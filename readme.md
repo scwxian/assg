@@ -2,7 +2,7 @@
 
 # Another Static Site Generator (ASSG)
 
-Need to build a simple static site that's only a few pages? Some friend asked your help to build a landing page? Can't be bothered to use any JS Framekwork because of how stupidly simple the website is supposed to be? Client asked to create single webpage but needs some crazy weird 3D bullshit?
+Need to build a simple static site that's only a few pages? Some friend asked your help to build a landing page? Can't be bothered to use any JS Framework because of how stupidly simple the website is supposed to be? Client asked to create single webpage but needs some crazy weird 3D bullshit?
 
 I present to you **ASSG**: the poor-man's Astro. It's a simple SSG for building multi-page static websites using [swup.js](https://swup.js.org/) for seamless page transitions and built using Vite. Covers everything a basic site would need plus SEO — a fine ASS my G.
 
@@ -30,16 +30,26 @@ The site is built with "performance-first" as the focus. The goal is to offload 
   * **`static-data-builder`** and **`static-data-injections`**: Explicitly list data sources to build out the html partials and inject into any page, accepts JSON & JSON5.
   * **`html-minifier`**: Compresses the final HTML output for dat page speed score.
 
+* **Centralized Configuration and SEO Assets (`site.config.js`)**:
+  * All global variables (Site Name, URLs, Contact Info, Social Links) are defined in one place.
+  * A custom Vite plugin automatically finds and replaces `%%VARIABLES%%` across all HTML files and JSON-LD schemas during the build.
+  * A custom Vite plugin hooks into the build process to automatically detect all pages and generate an up-to-date `sitemap.xml`, `robots.txt`, and `site.webmanifest` on the fly. No manual XML updating required.
+
 ## 🟢 Getting Started
 
-To get started, clone the repo, rename it to your site's domain name (example.com), run `init-project.sh` to create the site.config.js and .env files in your root and update the package.json.
-* **site.config.js** contains everything for your SEO and covers the basic legal pages like privacy-policy and terms-of-use. Customize them to fit your needs.
-* **All .env.*** contains the usual secrets. Except for VITE_BASE_URL, you need to add these secrets into your CI/CD pipeline if they are needed during your build process. The magic keyword for `.env.development` should be the same as the one that you will use for your dev deployment.
-* **Meta assets for SEO** can be generated at [RealFaviconGenerator](https://realfavicongenerator.net/). The other 3 that needs to be created manually are:
-  * Logo (logo.png)
-  * Cover Image (cover-image.png, 1920x1080px)
-  * Socal Share Image (socal-share-image.webp, 1200x630px)
+* **Pre-req**: **Node.js v20** or higher is required for local development and builds.
+* **Initial Setup**:
+  1. Clone the repo and rename it to your site's domain name _(example.com)_
+  2. Chmod the initialization script `chmod +x init-project.sh`
+  2. Run `./init-project.sh` to automatically generates these files:
+      * **package.json** is updated with Author and Project Name (based on the name of the directory).
+      * **site.config.js** contains everything for your SEO and covers the basic legal pages like ``privacy-policy`` and ``terms-of-use``. Customize them to fit your needs and it will be injected into the HTML.
+      * **All .env.*** contains the usual secrets. Except for VITE_BASE_URL, you need to add these secrets into your CI/CD pipeline if they are needed during your build process. The magic keyword for `.env.development` should be the same as the one that you will use for your dev deployment.
 
+**Meta assets for SEO** can be generated at [RealFaviconGenerator](https://realfavicongenerator.net/). The other 3 that needs to be created manually are:
+* Logo (logo.png)
+* Cover Image (cover-image.png, 1920x1080px)
+* Social Share Image (social-share-image.webp, 1200x630px)
 
 ## 🏗️ Development
 
@@ -48,21 +58,25 @@ The project has distinct workflows for local testing and production deployment.
 
 ### Local Dev Server
 
-For active development with live reloading, run the following command from the project root. This starts the Vite dev server inside a container, with your local files hot-mounted for instant updates.
+For active development with live reloading, run the following standard command from the project root:
 
 ```bash
-nerdctl.lima run --rm -it \
+npm install && npm run dev
+```
+*(Use `npx vite --host` if you want to test on a physical mobile device connected to your network like via USB-C)*
+
+**Alternative: Containerized Dev Server**
+
+If you prefer an isolated environment, you can run the dev server inside a container with your local files hot-mounted:
+
+```bash
+docker run --rm -it \
   -p 5173:5173 \
   -v "$(pwd)":/app \
   --workdir /app \
-  node:22-alpine \
+  node:20-alpine \
   sh -c "npm install && npm run dev -- --host"
   ```
-
-For active development with live reloading on a physical mobile device connected via USB C — or if you're not using a container to run the dev server — run the following command:
-```bash
-npx vite --host
- ```
 
 ### Local Build Testing
 

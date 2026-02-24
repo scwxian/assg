@@ -32,16 +32,16 @@
       "logo": "%%SITE_URL%%/meta-assets/logo.png",
       "image": "%%SITE_URL%%/meta-assets/cover-image.png",
       "description": "%%SITE_DESC%%",
-      "telephone": "+60123456789",
+      "telephone": "%%PHONE%%",
       "address": {
         "@type": "PostalAddress",
-        "addressLocality": "City",
-        "addressRegion": "State",
-        "addressCountry": "Country(TWO-LETTER-ABBV)"
+        "addressLocality": "%%BUSINESS_LOCATION%%",
+        "addressRegion": "%%BUSINESS_REGION%%",
+        "addressCountry": "%%BUSINESS_JURISDICTION%%"
       },
       "sameAs": [
-        "https://www.instagram.com/yourhandle",
-        "https://www.facebook.com/yourhandle",
+        "%%INSTAGRAM%%",
+        "%%FACEBOOK%%"
       ],
       "keywords": "keyword 1, keyword 2, keyword 3"
     }
@@ -219,15 +219,15 @@
             </div>
 
             <button class="carousel-button prev" aria-label="Previous Slide">
-  <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 492 492">
-    <path fill="currentColor" d="M383 227 164 8c-5-5-12-8-19-8s-14 3-19 8l-16 16a27 27 0 0 0 0 38l183 184-184 184a27 27 0 0 0 0 38l16 16c6 5 12 8 19 8s14-3 20-8l219-219a27 27 0 0 0 0-38z"/>
-  </svg>
-</button>
-<button class="carousel-button next" aria-label="Next Slide">
-  <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 492 492">
-    <path fill="currentColor" d="M383 227 164 8c-5-5-12-8-19-8s-14 3-19 8l-16 16a27 27 0 0 0 0 38l183 184-184 184a27 27 0 0 0 0 38l16 16c6 5 12 8 19 8s14-3 20-8l219-219a27 27 0 0 0 0-38z"/>
-  </svg>
-</button>
+              <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 492 492">
+                <path fill="currentColor" d="M383 227 164 8c-5-5-12-8-19-8s-14 3-19 8l-16 16a27 27 0 0 0 0 38l183 184-184 184a27 27 0 0 0 0 38l16 16c6 5 12 8 19 8s14-3 20-8l219-219a27 27 0 0 0 0-38z"/>
+              </svg>
+            </button>
+            <button class="carousel-button next" aria-label="Next Slide">
+              <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 492 492">
+                <path fill="currentColor" d="M383 227 164 8c-5-5-12-8-19-8s-14 3-19 8l-16 16a27 27 0 0 0 0 38l183 184-184 184a27 27 0 0 0 0 38l16 16c6 5 12 8 19 8s14-3 20-8l219-219a27 27 0 0 0 0-38z"/>
+              </svg>
+            </button>
 
             <div class="carousel-nav">
               <button class="carousel-indicator active" aria-label="Go to slide 1"></button>
@@ -281,9 +281,9 @@
         <p class="section-body center-text">Laboris est proident duis magna amet est cillum id duis irure duis fugiat enim ea</p>
         <ul class="contact-links">
           <li id="email">
-            <a href="mailto:hello@yoursite.com">Email</a></li>
+            <a href="mailto:%%EMAIL%%">Email</a></li>
           <li id="whatsapp">
-            <a href="https://wa.me/01236456789" 
+            <a href="https://wa.me/%%WHATSAPP%%" 
                target="_blank"
                rel="noopener noreferrer"
                aria-label="WhatsApp Us">
@@ -292,7 +292,7 @@
           </li>
 
           <li id="instagram">
-            <a href="https://instagram.com/yourtag" 
+            <a href="%%INSTAGRAM%%" 
                target="_blank"
                rel="noopener noreferrer"
                aria-label="Instagram">

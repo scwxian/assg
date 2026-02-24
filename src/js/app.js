@@ -5,6 +5,7 @@ import { initPersistent, initPage } from './main.js';
 
 // --- Global State ---
 let currentPageCleanup = null;
+let currentObserver = null;
 const pageModules = import.meta.glob([
     '../*.js', 
     '../*/*.js',
@@ -12,10 +13,36 @@ const pageModules = import.meta.glob([
 ]);
 initPersistent();
 
+// --- Nav Active State Updater ---
+function updateNavActiveState() {
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll('header nav a');
+
+    navLinks.forEach(link => {
+        const url = new URL(link.href);
+
+        if (url.hash) {
+            link.removeAttribute('aria-current');
+            return;
+        }
+
+        const linkPath = url.pathname.replace(/\/$/, '');
+        const activePath = currentPath.replace(/\/$/, '');
+
+        if (linkPath === activePath) {
+            link.setAttribute('aria-current', 'page');
+        } else {
+            link.removeAttribute('aria-current');
+        }
+    });
+}
+
 // --- Mount/Unmount Logic ---
 async function mountPage() {
+
+    updateNavActiveState();
     // Run global page logic (animations, etc.)
-    initPage();
+    currentObserver = initPage();
 
     // Run page-specific logic
     const pageIdentifier = document.getElementById('swup')?.dataset.page;
@@ -49,6 +76,11 @@ function unmountPage() {
         currentPageCleanup();
     }
     currentPageCleanup = null;
+
+    if (currentObserver) {
+        currentObserver.disconnect();
+        currentObserver = null;
+    }
 }
 
 // --- Initialize Swup ---

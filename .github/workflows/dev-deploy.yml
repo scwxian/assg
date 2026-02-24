@@ -6,7 +6,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      MAGIC_KEYWORD: $${{ secrets.MAGIC_KEYWORD}}
+      MAGIC_KEYWORD: ${{ secrets.MAGIC_KEYWORD}}
     permissions:
       contents: read
     steps:

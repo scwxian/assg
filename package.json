@@ -1,5 +1,5 @@
 {
-  "name": "static-site-boilerplate",
+  "name": "Another Static Site Generator (ASSG)",
   "version": "1.0.0",
   "description": "A static site project initialized via boilerplate.",
   "private": true,
@@ -12,6 +12,9 @@
   "author": "Shawn Cheng",
   "license": "ISC",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "devDependencies": {
     "@swup/head-plugin": "^2.3.1",
     "@swup/preload-plugin": "^3.2.11",

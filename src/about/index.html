@@ -21,17 +21,17 @@
     "url": "%%SITE_URL%%",
           "logo": "%%SITE_URL%%/meta-assets/logo.png",
       "image": "%%SITE_URL%%/meta-assets/cover-image.png",
-    "telephone": "+01236546789",
+    "telephone": "%%PHONE%%",
     "address": {
       "@type": "PostalAddress",
-              "addressLocality": "City",
-        "addressRegion": "State",
-        "addressCountry": "Country"
+          "addressLocality": "%%BUSINESS_LOCATION%%",
+        "addressRegion": "%%BUSINESS_REGION%%",
+          "addressCountry": "%%BUSINESS_JURISDICTION%%"
 
     },
     "sameAs": [
-      "https://www.instagram.com/yourhandle",
-      "https://www.facebook.com/yourhandle"
+        "%%INSTAGRAM%%",
+        "%%FACEBOOK%%"
     ]
   }
 }
@@ -194,7 +194,7 @@
                 </div>
 
                 <div class="section-cta animate-element slide-from-bottom delay-animation-small">
-                    <a href="https://instagram.com/yourhandle" class="button" target="_blank" rel="noopener noreferrer">
+                    <a href="%%INSTAGRAM%%" class="button" target="_blank" rel="noopener noreferrer">
                         Follow Us on Instagram
                     </a>
                 </div>

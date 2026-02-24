@@ -46,26 +46,25 @@ export function initPersistent() {
     // --- Modules ---
 
     // --- Core Functions ---
-    // Global Data Imoprter for both yaml and json
-    const rawData = import.meta.glob('../assets/data/*.{json,yaml}', {
+    // Global Data Imoprter for json and json5 files
+    const rawData = import.meta.glob('../assets/data/*.{json,json5}', {
         eager: true,
         query: '?url',
         import: 'default'
     });
 
     const dataRegistry = Object.keys(rawData).reduce((acc, path) => {
-        const lookupKey = path;
-        const finalUrl = rawData[path].replace(/\.yaml$/, '.json');
-        acc[lookupKey] = finalUrl;
+        acc[path] = rawData[path]
         return acc;
     }, {});
 
-    window.getDataUrl = (filename) => {
+    window.ASSG = window.ASSG || {};
+    window.ASSG.getDataUrl = (filename) => {
         const lookupKey = `../assets/data/${filename}`;
         const finalUrl = dataRegistry[lookupKey];
 
         if (!finalUrl) {
-            console.warn(`[Global Data] File "${filename}" not found in src/assets/data/.`);
+            console.warn(`[App Data] File "${filename}" not found in src/assets/data/.`);
             console.debug('Available data files:', Object.keys(dataRegistry));
             return null;
         }
@@ -148,6 +147,7 @@ export function initPage() {
     // --- Define all DOM Elements ---
     // Scroll Actions (Animate Elements or Lazy Load Modules when almost in view)
     const observedElements = document.querySelectorAll('.animate-element, [data-lazy-module]');
+    let observer = null;
 
     if (observedElements.length > 0) {
 
@@ -172,5 +172,7 @@ export function initPage() {
             observer.observe(element);
         });
     }
+
+    return observer;
 
 }
