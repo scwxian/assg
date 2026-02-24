@@ -1,0 +1,94 @@
+[
+  // ----------------------------------------------------------------------
+  // Category 1: General Inquiries
+  // ----------------------------------------------------------------------
+  {
+    id: 'general',
+    category: 'General',
+    npcName: 'Kai',
+    dialogue: [
+      'Welcome to our company!',
+      'How can I help you today?',
+      'We aim to provide the best service.',
+    ],
+    questions: [
+      {
+        q: 'What are your operating hours?',
+        a: 'We are open Monday to Friday, from 9:00 AM to 6:00 PM (EST). Our customer support team is available 24/7 via email for urgent inquiries.',
+      },
+      {
+        q: 'Where are you located?',
+        a: 'Our main headquarters is located in the heart of the city, but our team operates globally on a remote-first basis to serve clients worldwide.',
+      },
+      {
+        q: 'How can I contact support?',
+        a: 'You can reach us via our support portal, drop us an email, or use the live chat feature at the bottom right of your screen during regular business hours.',
+      },
+    ],
+  },
+
+  // ----------------------------------------------------------------------
+  // Category 2: Products & Services
+  // ----------------------------------------------------------------------
+  {
+    id: 'services',
+    category: 'Products & Services',
+    npcName: 'Taylor',
+    dialogue: [
+      'Looking for something specific?',
+      'Our products are built to scale with you.',
+      'Let me walk you through our catalog.',
+    ],
+    questions: [
+      {
+        q: 'Do you offer custom enterprise solutions?',
+        a: 'Yes, we tailor our services to meet your specific business requirements. Please contact our sales team to schedule a consultation and discuss your unique use case.',
+      },
+      {
+        q: 'What is your pricing model?',
+        a: 'Our pricing is tiered based on usage and feature access. We offer a basic tier for startups, a professional tier for growing teams, and an enterprise tier for large-scale operations. Check out our Pricing page for a full breakdown.',
+      },
+      {
+        q: 'Is there a warranty or guarantee on your products?',
+        a: 'Absolutely. All our physical products come with a standard 1-year warranty covering manufacturing defects. Digital services include an uptime SLA guarantee of 99.9%.',
+      },
+      {
+        q: 'Do you provide onboarding or training?',
+        a: 'Yes, every professional and enterprise plan includes dedicated onboarding sessions with a customer success manager to ensure your team is up and running smoothly.',
+      },
+    ],
+  },
+
+  // ----------------------------------------------------------------------
+  // Category 3: Billing & Account
+  // ----------------------------------------------------------------------
+  {
+    id: 'billing',
+    category: 'Billing & Account',
+    npcName: 'Sam',
+    dialogue: [
+      'Having trouble with an invoice?',
+      'I can help manage your account settings.',
+      'Need to upgrade? You\'re in the right place.', // Escaping single quotes works identically to JS
+    ],
+    questions: [
+      {
+        q: 'What payment methods do you accept?',
+        a: 'We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and direct bank transfers for enterprise accounts.',
+      },
+      {
+        q: 'How do I cancel my subscription?',
+        a: 'You can cancel your subscription at any time directly from your Account Dashboard under the "Billing" section. Your access will remain active until the end of your current billing cycle.',
+      },
+      {
+        q: 'What is your refund policy?',
+        // This answer is intentionally long to test the UI's ability to handle varying heights
+        a: 'We offer a 30-day money-back guarantee for all new purchases. If you are not completely satisfied with our product or service, simply reach out to our support team within 30 days of your original purchase date, and we will process a full refund to your original payment method. Please note that certain promotional items, customized consulting services, or third-party add-ons might be exempt from this policy, which will be clearly stated at the time of checkout. Refunds typically take 3-5 business days to appear on your bank statement.',
+      },
+      {
+        q: 'Can I change my billing cycle from monthly to annually?',
+        a: 'Yes! You can switch to annual billing in your account settings and automatically receive a 20% discount on your subscription.',
+      },
+    ],
+  },
+]

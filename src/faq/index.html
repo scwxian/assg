@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <load 
+            src="partials/meta.html" 
+            href="https://maincoffeelab.com/faq"
+            title="Questions & (Some) Answers | Main Coffee Lab"
+            description="Questions on Specialty Coffee (or us) that you might be wondering about, like our roastery in Kuala Lumpur, 'Main' philosophy, wholesale coffee, or corporate events. We've got answers (kinda)."
+            page="faq"
+        />
+
+        %%FAQ_SCHEMA%%
+
+    </head>
+
+    <body>
+        <h1 class="hidden-visually">Frequently Asked Questions | Main Coffee Lab</h1>
+        
+        <load src="/partials/header.html" />
+
+        <main id="swup" data-page="faq">
+            <section class="faq-section center-layout">
+                    <div class="section-subtitle">
+                         Things you're probably <img src="/assets/icons/question-pixel-icon.png" alt="" class="section-icon mid-sentence"> wondering about
+                    </div>                                   
+                    <h2 class="section-title">FAQ</h2>
+
+                <div class="npc-carousel-wrapper">
+                        <button id="scroll-left" class="carousel-arrow" aria-label="Scroll left">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-5.5 0 26 26" fill="currentColor" aria-hidden="true" focusable="false">
+                                <path fill-rule="evenodd" d="m5.1 13 9.3-8.4c.8-.8.8-2.2 0-3-.9-.8-2.2-.8-3 0L.6 11.4c-.5.4-.7 1-.6 1.6 0 .6.1 1.2.6 1.6l10.8 9.8c.8.8 2.1.8 3 0 .8-.8.8-2.2 0-3L5 13"/>
+                            </svg>
+                        </button>
+                        <div class="npc-carousel-inner">
+                            <div id="npc-carousel-container" class="faq-buttons-container">
+                                %%FAQ_NPC_CARDS%%
+                            </div>
+                        </div>
+                        <button id="scroll-right" class="carousel-arrow right" aria-label="Scroll right">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-5.5 0 26 26" fill="currentColor" aria-hidden="true" focusable="false">
+                                <g transform="scale(-1 1) translate(-15 0)">
+                                <path fill-rule="evenodd" d="m5.1 13 9.3-8.4c.8-.8.8-2.2 0-3-.9-.8-2.2-.8-3 0L.6 11.4c-.5.4-.7 1-.6 1.6 0 .6.1 1.2.6 1.6l10.8 9.8c.8.8 2.1.8 3 0 .8-.8.8-2.2 0-3L5 13"/>
+                                </g>
+                            </svg>
+                        </button>
+                </div>
+                <div id="faq-content" class="faq-container">
+                    %%FAQ_CONTENT%%
+                </div>
+
+            </section>
+        </main>  
+
+    </body>
+
+    <load src="/partials/footer.html" />
+
+</html>
+
+

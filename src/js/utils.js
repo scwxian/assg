@@ -1,6 +1,4 @@
 'use strict';
- 
-import "../css/modules/timeline.css";
 
 // accordion animations handler
 export function initAccordionAnimations(parentElement = document) {

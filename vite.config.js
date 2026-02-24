@@ -8,8 +8,9 @@ import injectHTML from 'vite-plugin-html-inject'
 
 // Custom Plugins
 import { getHtmlEntries } from './custom-vite-plugins/html-entry-finder.js';
-import { faqBuilderPlugin } from './custom-vite-plugins/faq-builder-plugin.js'
-import { yamlToJson } from "./custom-vite-plugins/yaml-to-json.js";
+import { staticDataBuilder } from "./custom-vite-plugins/static-data-builder.js";
+import { injections } from "./custom-vite-plugins/static-data-injections.config.js";
+import { json5ClientLoader } from "./custom-vite-plugins/json5-client-loader.js";
 
 function htmlBaseUrlReplacer(env) {
   return {
@@ -45,8 +46,8 @@ export default defineConfig(({ mode }) => {
     envDir: '../',
     publicDir: '../public',
     plugins: [
-      yamlToJson(),
-      faqBuilderPlugin(),
+      json5ClientLoader(),
+      staticDataBuilder(injections),
       injectHTML(),
       htmlBaseUrlReplacer(env),
       htmlMinifier({
