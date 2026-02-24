@@ -1,0 +1,44 @@
+/* Decorative floating images (Background Assets) */
+.float-frame {
+    position: relative;
+    overflow-x: clip; 
+}
+
+.float-container {
+    position: absolute;
+    pointer-events: none; 
+    z-index: -1;
+
+    width: var(--float-size, max(200px, 30vw));
+
+    top: var(--top, auto);
+    bottom: var(--bottom, auto);
+    left: var(--left, auto);
+    right: var(--right, auto);
+    transform: var(--transform, none);
+}
+
+.float-container img,
+.float-container svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.float-container.pos-top { --top: var(--offset-y, -10%); }
+.float-container.pos-bottom { --bottom: var(--offset-y, -10%); }
+.float-container.pos-left { --left: var(--offset-x, -10%); }
+.float-container.pos-right { --right: var(--offset-x, -10%); }
+.float-container.pos-mid-y { 
+    --top: 50%; 
+    --transform: translateY(-50%) var(--extra-transform, scale(1)); 
+}
+
+@media (max-width: 768px) {
+    .float-container {
+        width: var(--float-size-mobile, 200px);
+        --offset-x: var(--offset-x-mobile, -5%);
+        --offset-y: var(--offset-y-mobile, -5%);
+    }
+    .float-container.mobile-hide { display: none; }
+}

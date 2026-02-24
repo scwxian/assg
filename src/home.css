@@ -1,5 +1,7 @@
 @import "/css/section-layouts/overlap.css";
-@import "/css/section-layouts/two-column.css";
+@import "/css/section-layouts/grid.css";
+@import "/css/modules/decorative-floats.css";
+@import "/css/modules/carousel.css";
 
 /* contact list styles */
 .contact-links {

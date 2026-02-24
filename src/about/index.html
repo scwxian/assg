@@ -56,11 +56,16 @@
                         <p class="section-body">Laboris est proident duis magna amet est cillum id duis irure duis fugiat enim ea</p>
                         <div class="tab-layout inverted">
                             <div class="tab-wrapper">
+                              <div class="tab-nav-container">
                                 <nav class="tab-nav">
                                     <button class="tab-button active" data-tab="tab-1">// Tab 1</button>
                                     <button class="tab-button" data-tab="tab-2">// Tab 2</button>
                                     <button class="tab-button" data-tab="tab-3">// Tab 3</button>
                                 </nav>
+                <button class="tab-next-btn" aria-label="Next Tab">
+                  <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="24" height="24" viewBox="0 0 492 492"><path fill="currentColor" d="M383 227 164 8c-5-5-12-8-19-8s-14 3-19 8l-16 16a27 27 0 0 0 0 38l183 184-184 184a27 27 0 0 0 0 38l16 16c6 5 12 8 19 8s14-3 20-8l219-219a27 27 0 0 0 0-38z"/></svg>
+                </button>
+                              </div>
 
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="tab-1">
@@ -101,19 +106,18 @@
                     </div>
                 </div>
             </section>
-            <section>
-              <div class="two-col-layout">
-                <div class="left-col">
-                  <h3>DAY 1 - Friday 10th April 2026</h3>
+            <section class="grid-layout grid-2 shrink-left timeline">
+              <div class="left-col">
+                <div class="timeline-date">
+                  <h3 class="day-number m-t-0">Day 1</h3>
+                  <span class="day">Friday</span>
+                  <span class="date">10th April 2026</span>
                 </div>
+              </div>
 
                 <div class="right-col">
-                  <ul class="agenda-list">
                     %%AGENDA_DAY_1%%
-                  </ul>
                 </div>
-
-              </div>
 
             </section>
 

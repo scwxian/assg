@@ -1,12 +1,13 @@
 'use strict';
 
-import { initAccordionAnimations, initTooltips } from '/js/utils.js';
+import { initAccordionAnimations, initTooltips, initCarousel } from '/js/utils.js';
 
 export default function init() { 
     const contentContainer = document.querySelector('#swup[data-page="home"]');
     if (!contentContainer) return;
 
     initAccordionAnimations(contentContainer);
+    initCarousel(contentContainer);
 
     const { clickOutsideHandler, tooltip } = initTooltips(contentContainer);
     

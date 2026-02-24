@@ -3,6 +3,10 @@
 // accordion animations handler
 export function initAccordionAnimations(parentElement = document) {
     document.querySelectorAll('details').forEach((accordion) => {
+
+        if (accordion.dataset.hasListener) return;
+        accordion.dataset.hasListener = 'true';
+
         const summary = accordion.querySelector('summary');
         const contentWrapper = accordion.querySelector('.details-content');
 
@@ -46,6 +50,7 @@ export function initTabLayout(parentElement = document) {
         const tabContent = tabWrapper.querySelector('.tab-content');
         const tabButtons = tabWrapper.querySelectorAll('.tab-button');
         const tabPanes = tabWrapper.querySelectorAll('.tab-pane');
+        const nextBtn = tabWrapper.querySelector('.tab-next-btn');
 
         if (!tabNav || !tabContent || !tabButtons.length || !tabPanes.length) {
             console.warn('Skipping a tab-wrapper due to missing elements.');
@@ -77,6 +82,30 @@ export function initTabLayout(parentElement = document) {
             clickedButton.classList.add('active');
             targetPane.classList.add('active');
         });
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const currentButton = tabWrapper.querySelector('.tab-button.active');
+                if (!currentButton) return;
+
+                const currentIndex = Array.from(tabButtons).indexOf(currentButton);
+
+                let nextIndex = currentIndex + 1;
+                if (nextIndex >= tabButtons.length) {
+                    nextIndex = 0;
+                }
+
+                const nextTab = tabButtons[nextIndex];
+                nextTab.click();
+
+                nextTab.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'center'
+                });
+            });
+        }
     });
 }
 
@@ -162,3 +191,86 @@ export function initTooltips(parentElement = document) {
     return { clickOutsideHandler, tooltip };
 }
 
+// Carousel Handler 
+export function initCarousel(parentElement = document) {
+    const carousels = parentElement.querySelectorAll('.carousel');
+
+    carousels.forEach(carousel => {
+        const track = carousel.querySelector('.carousel-track');
+        const slides = Array.from(track.querySelectorAll('.carousel-slide'));
+        const nextButton = carousel.querySelector('.carousel-button.next');
+        const prevButton = carousel.querySelector('.carousel-button.prev');
+        const indicators = Array.from(carousel.querySelectorAll('.carousel-indicator'));
+
+        if (!track || slides.length === 0) return;
+
+        // 1. Setup Intersection Observer to update dots when scrolling/swiping
+        const observerOptions = {
+            root: track,
+            threshold: 0.5 // Trigger when a slide is 50% visible
+        };
+
+        const slideObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const activeIndex = slides.indexOf(entry.target);
+                    // Update dots
+                    indicators.forEach((ind, i) => {
+                        ind.classList.toggle('active', i === activeIndex);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        slides.forEach(slide => slideObserver.observe(slide));
+
+        // 2. Button Event Listeners
+        const scrollAmount = () => track.clientWidth; // Dynamic width calculation
+
+        if (nextButton) {
+            nextButton.addEventListener('click', () => {
+                // If at the end, scroll back to start, otherwise scroll right
+                if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
+                    track.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    track.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+                }
+            });
+        }
+
+        if (prevButton) {
+            prevButton.addEventListener('click', () => {
+                // If at the start, scroll to end, otherwise scroll left
+                if (track.scrollLeft <= 10) {
+                    track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' });
+                } else {
+                    track.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+                }
+            });
+        }
+
+        // 3. Dot Click Listeners
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                const targetScroll = scrollAmount() * index;
+                track.scrollTo({ left: targetScroll, behavior: 'smooth' });
+            });
+        });
+
+        // 4. Auto-cycle (if data-interval is present)
+        if (carousel.dataset.interval) {
+            const intervalTime = parseInt(carousel.dataset.interval);
+            let autoCycle = setInterval(() => nextButton.click(), intervalTime);
+
+            // Pause on hover or touch
+            carousel.addEventListener('mouseenter', () => clearInterval(autoCycle));
+            carousel.addEventListener('mouseleave', () => {
+                autoCycle = setInterval(() => nextButton.click(), intervalTime);
+            });
+            carousel.addEventListener('touchstart', () => clearInterval(autoCycle), { passive: true });
+            carousel.addEventListener('touchend', () => {
+                autoCycle = setInterval(() => nextButton.click(), intervalTime);
+            });
+        }
+    });
+}

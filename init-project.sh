@@ -11,15 +11,20 @@ echo "🚀 Initializing project configuration..."
 echo "📝 Creating .env files..."
 
 # Create .env with generic placeholders
+cat >.site.config.js <<EOF
+export default {
+  SITE_URL: "https://mysite.com",
+  SITE_NAME: "My New Site",
+  SITE_DESC: "My Site Description",
+  DOMAIN_NAME: "mysite.com",
+  BUSINESS_NAME: "My Business Name",
+  BUSINESS_LOCATION: "City, Country",
+  BUSINESS_JURISDICTION: "Country"
+};
+EOF
+
 cat >.env <<EOF
 VITE_INSTAGRAM_FEED_URL=
-VITE_SITE_URL=https://mysite.com
-VITE_SITE_NAME="My New Site"
-VITE_SITE_DESC="My Site Description"
-VITE_DOMAIN_NAME=mysite.com
-VITE_BUSINESS_NAME="My Business Name"
-VITE_BUSINESS_LOCATION="City, Country"
-VITE_BUSINESS_JURISDICTION="Country"
 EOF
 
 cat >.env.development <<EOF
@@ -30,7 +35,6 @@ cat >.env.production <<EOF
 VITE_BASE_URL=
 EOF
 
-# --- Update Package Metadata ---
 echo "📦 Updating package.json and package-lock.json..."
 
 CURRENT_USER=$(git config user.name)

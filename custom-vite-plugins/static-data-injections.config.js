@@ -15,18 +15,32 @@ export const injections = [
     renderer: (data) => {
       if (!data || !Array.isArray(data)) return '<li class="agenda-message error">Error loading schedule.</li>';
 
-      return data.map(item => `
+      const agendaItemsHtml = data.map(item => `
         <li class="agenda-item">
             <div class="agenda-time">
                 <time>${item.time}</time>
             </div>
             <div class="agenda-content">
-                <h3 class="agenda-title">${item.title}</h3>
+                <h4 class="agenda-title">${item.title}</h4>
                 ${item.description ? `<p class="agenda-desc">${item.description}</p>` : ''}
                 ${item.host ? `<p class="agenda-host">${item.host}</p>` : ''}
             </div>
         </li>
       `).join('');
+
+      return `
+        <ul class="agenda-list desktop">
+            ${agendaItemsHtml}
+        </ul>
+        <details class="agenda-list mobile">
+            <summary>Learn More</summary>
+            <div class="details-content">
+                <ul class="agenda-list">
+                    ${agendaItemsHtml}
+                </ul>
+            </div>
+        </details>
+      `;
     }
   },
 

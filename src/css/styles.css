@@ -12,4 +12,5 @@
 @import "foundation/utility.css"; /* Utility Classes For Easy Minor Adjustments */
 
 /* Project Specific (Clear on new project) */
+/* Note: Page-specific styles are loaded last and have priority over custom-styles */
 @import "custom/custom-styles.css";

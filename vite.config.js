@@ -1,6 +1,7 @@
 // Native Plugins/Modules
 import { defineConfig, loadEnv } from 'vite'
 import { resolve } from 'path'
+import siteConfig from './site.config.js';
 
 // Third-party Plugins
 import htmlMinifier from 'vite-plugin-html-minifier'
@@ -12,20 +13,20 @@ import { staticDataBuilder } from "./custom-vite-plugins/static-data-builder.js"
 import { injections } from "./custom-vite-plugins/static-data-injections.config.js";
 import { json5ClientLoader } from "./custom-vite-plugins/json5-client-loader.js";
 
-function htmlBaseUrlReplacer(env) {
+function htmlBaseUrlReplacer(env, config) {
   return {
     name: 'html-base-url-replacer',
     transformIndexHtml(html) {
 
       const replacements = {
         BASE_URL: env.VITE_BASE_URL || '',
-        SITE_URL: (env.VITE_SITE_URL || '').replace(/\/$/, ''),
-        SITE_NAME: env.VITE_SITE_NAME || 'My Site',
-        SITE_DESC: env.VITE_SITE_DESC || 'My Site Description',
-        DOMAIN_NAME: env.VITE_DOMAIN_NAME || 'mysite.com',
-        BUSINESS_NAME: env.VITE_BUSINESS_NAME || 'My Full Business Name',
-        BUSINESS_LOCATION: env.VITE_BUSINESS_LOCATION || 'State, Country',
-        BUSINESS_JURISDICTION: env.VITE_BUSINESS_JURISDICTION || 'Country',
+        SITE_URL: (config.SITE_URL || '').replace(/\/$/, ''),
+        SITE_NAME: config.SITE_NAME || 'My Site',
+        SITE_DESC: config.SITE_DESC || 'My Site Description',
+        DOMAIN_NAME: config.DOMAIN_NAME || 'mysite.com',
+        BUSINESS_NAME: config.BUSINESS_NAME || 'My Full Business Name',
+        BUSINESS_LOCATION: config.BUSINESS_LOCATION || 'State, Country',
+        BUSINESS_JURISDICTION: config.BUSINESS_JURISDICTION || 'Country',
       }
 
       return html.replace(/%%(\w+)%%/g, (match, key) => {
@@ -49,15 +50,14 @@ export default defineConfig(({ mode }) => {
       json5ClientLoader(),
       staticDataBuilder(injections),
       injectHTML(),
-      htmlBaseUrlReplacer(env),
+      htmlBaseUrlReplacer(env,siteConfig),
       htmlMinifier({
         minify: true,
       }),
     ],
     server: {
       watch: {
-        usePolling: true,
-        ignored: ['**/src/.temp/**']
+        usePolling: true
       }
     },
     esbuild: {
