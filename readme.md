@@ -86,7 +86,7 @@ Then, use any web server of your choice to serve the `dist` dir _(ie: Caddy)_ to
 
 ## 🚀 Deployment
 
-You can deploy with any provider: AWS CloudFront, CloudFlare Workers, Netlify, Vercel, etc — it's totally up to you. The main goal of this project is to generate that final `dist` dir. After that it's just who you fuck with to deploy your shit.
+You can deploy with any provider: AWS CloudFront, CloudFlare Workers, Netlify, Vercel, etc — it's totally up to you. The main goal of this project is to generate that final `dist` dir. After that it's just who you fuck with.
 
 Currently, the default CI/CD Pipeline is to have **GitHub Actions** build the project in a clean Ubuntu environment, sync the `dist` folder into a **S3 bucket** served via **CloudFront**, then create a CloudFront invalidation to ensure the changes go live immediately. It's triggered based on any push to *main* or *dev* for dev and prod deployments respectively.
 

@@ -20,7 +20,7 @@
     "@swup/preload-plugin": "^3.2.11",
     "json5": "^2.2.3",
     "swup": "^4.8.2",
-    "vite": "^7.1.5",
+    "vite": "^8.0.0",
     "vite-plugin-html-inject": "^1.1.2",
     "vite-plugin-html-minifier": "^1.0.5"
   }

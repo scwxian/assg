@@ -1,0 +1,71 @@
+.bio-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.bio-avatar {
+    width: 90px;
+    margin-bottom: 0.5rem;
+}
+
+.bio-title {
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.bio-subtitle {
+    margin: 1rem 0 1.5rem 0;
+    color: var(--text-light);
+    font-size: 0.90rem;
+}
+
+.social-icon-list {
+    display: flex;
+    gap: 1.3rem;
+    margin: 1rem 0 3rem;
+}
+.social-icon-list img {
+    width: 28px;
+}
+
+.bio-section-heading {
+    font-size: 1.4rem;
+    margin: 0rem 0 2rem;
+    text-transform: uppercase;
+}
+
+.bio-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.bio-links a.button {
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bio-button-icon {
+    position: absolute;
+    left: 1.5rem; 
+    width: 24px;
+}
+
+.bio-divider {
+    border: none;
+    border-top: 2px dashed var(--border);
+    width: 60%;
+    margin: 3.2rem auto 3rem;
+    opacity: 0.7;
+}

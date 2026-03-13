@@ -88,7 +88,10 @@ const swup = new Swup({
     containers: ['#swup'],
     animationSelector: '#swup',
     plugins: [
-        new SwupHeadPlugin({ awaitAssets: true }),
+        new SwupHeadPlugin({ 
+            awaitAssets: true,
+            persistTags: 'link[rel="stylesheet"], style'
+        }),
         new SwupPreloadPlugin()
     ]
 });

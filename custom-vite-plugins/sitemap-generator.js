@@ -21,6 +21,9 @@ export function sitemapGenerator(config, srcRoot, htmlPages) {
         let relativePath = relative(srcRoot, filePath).replace(/\\/g, '/');
         if (relativePath === 'error.html' || relativePath === '404.html') continue;
         let route = relativePath === 'index.html' ? '' : relativePath.replace(/\/index\.html$/, '').replace(/\.html$/, '');
+        if (route === 'links' || route === 'bio' || route.startsWith('links/') || route.startsWith('bio/')) {
+          continue;
+        }
         let priority = '0.80';
         if (route === '') {
           priority = '1.00';
@@ -43,6 +46,8 @@ export function sitemapGenerator(config, srcRoot, htmlPages) {
       const robotsTxt = `# Allow all good search engines by default
 User-agent: *
 Allow: /
+Disallow: /links
+Disallow: /bio
 
 # Specifically disallow AI data harvesting bots
 User-agent: GPTBot

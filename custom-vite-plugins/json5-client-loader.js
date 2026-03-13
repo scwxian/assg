@@ -10,7 +10,8 @@ export function json5ClientLoader() {
           
           return {
             code: `export default ${JSON.stringify(parsedData)};`,
-            map: null
+            map: null,
+            moduleType: 'js'
           };
         } catch (error) {
           console.error(`[json5-client-loader] Error parsing ${id}:`, error.message);

@@ -46,14 +46,19 @@ export default defineConfig(({ mode }) => {
         usePolling: true
       }
     },
-    esbuild: {
-      drop: ['console', 'debugger']
-    },
     build: {
       outDir: '../dist',
       emptyOutDir: true,
-      rollupOptions: {
-        input: htmlPages
+      rolldownOptions: {
+        input: htmlPages,
+        output: {
+          minify: {
+            compress: {
+              drop_console: true,
+              drop_debugger: true
+            }
+          }
+        }
       }
     }
   }
