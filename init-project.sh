@@ -35,16 +35,47 @@ EOF
 
 cat >.env <<EOF
 VITE_INSTAGRAM_FEED_URL=
+
+# Optional. Single-bucket media origin for local dev/preview.
+# Use the CDN distribution hostname until the custom domain is attached.
+# Leave empty to fall back to SITE_URL (your custom domain).
+MEDIA_ORIGIN_URL=
+
+# Optional. Public media root. When set, media reads and build URLs use this
+# instead of SITE_URL. Example: https://assets.mydomain.com
+# Leave empty for the default one-bucket + CloudFront mode.
+MEDIA_CDN_URL=
+
+# Required for local media uploads. S3-compatible API endpoint.
+# AWS S3:  https://s3.ap-southeast-1.amazonaws.com
+# R2:      https://<account-id>.r2.cloudflarestorage.com
+# MinIO:   https://minio.example.com
+MEDIA_ENDPOINT_URL=
+
+# Set to 0 to skip automatic media uploads during local builds.
+MEDIA_SYNC=1
 EOF
 
 # Used for internal dev deployments via an obscured sub-path (e.g., dev.mysite.com/mymagickeyword)
 cat >.env.development <<EOF
 VITE_BASE_URL=/mymagickeyword
+
+# Bucket that receives local media/ uploads for dev builds.
+# Default mode: dev site bucket.
+# Optional public media mode: dev media bucket.
+MEDIA_BUCKET=
 EOF
 
 cat >.env.production <<EOF
 VITE_BASE_URL=
+
+# Bucket that receives local media/ uploads for prod builds.
+# Default mode: prod site bucket.
+# Optional public media mode: prod media bucket.
+MEDIA_BUCKET=
 EOF
+
+mkdir -p media
 
 echo "📦 Updating package.json and package-lock.json..."
 

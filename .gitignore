@@ -3,6 +3,10 @@ site-analytics/*
 .env*
 src/.temp/
 
+# Local media source (uploaded to bucket, not committed)
+/media/*
+!/media/.gitkeep
+
 # Node/Vite files
 /node_modules
 /dist

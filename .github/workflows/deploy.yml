@@ -3,6 +3,7 @@ name: Deploy Website to AWS S3
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -31,7 +32,8 @@ jobs:
         run: npm run build
       # Step 4: Deploy the 'dist' folder to the S3 bucket
       - name: Deploy to S3
-        run: aws s3 sync ./dist ${{ secrets.S3_BUCKET_PROD }} --delete
+        run: aws s3 sync ./dist ${{ secrets.S3_BUCKET_PROD }} --delete --exclude "media/*"
       # Step 5: Invalidate the CloudFront cache
       - name: Invalidate CloudFront
+        # "/*" also covers "/media/*"
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"

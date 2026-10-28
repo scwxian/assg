@@ -2,6 +2,7 @@ name: Deploy Dev Site to AWS S3 Dev Bucket
 on:
   push:
     branches: [dev]
+  workflow_dispatch:
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -28,6 +29,6 @@ jobs:
       - name: Build static site with Vite
         run: npm run build:dev
       - name: Deploy to S3
-        run: aws s3 sync ./dist ${{ secrets.S3_BUCKET_DEV }}/$MAGIC_KEYWORD --delete
+        run: aws s3 sync ./dist ${{ secrets.S3_BUCKET_DEV }}/$MAGIC_KEYWORD --delete --exclude "media/*"
       - name: Invalidate CloudFront
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.DEV_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/$MAGIC_KEYWORD/*"
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.DEV_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/$MAGIC_KEYWORD/*" "/media/*"

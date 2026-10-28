@@ -1,4 +1,6 @@
-# Another Static Site Generator (ASSG) - Coding Conventions & Guardrails
+# AGENTS.md
+
+Repo guardrails for coding agents. Setup lives in `readme.md`; system design lives in `docs/ARCHITECTURE.md`.
 
 ## 1. Environment Constraints
 * **Runtime:** This is a purely Static Site Generator using Node.js (v20+) strictly for the Vite build step. NEVER use Node built-ins in client-side code.
@@ -23,3 +25,20 @@
 * **Files & Directories:** ALWAYS use `kebab-case` (e.g., `insta-feed.js`, `privacy-policy/`, `apple-touch-icon.png`).
 * **Variables & Functions:** ALWAYS use `camelCase` in JavaScript (e.g., `initAccordionAnimations`, `dialogueState`).
 * **CSS Classes:** ALWAYS use `kebab-case` and prefer utility or BEM-lite descriptors (e.g., `section-subtitle`, `card-layout-wrapper`).
+
+## 6. Media Assets
+* **Large media:** ALWAYS store locally in `/media/` and reference as `/media/...`.
+* **Git:** NEVER commit large media. NEVER place it in `public/` or `src/assets/`.
+* **SEO assets:** Keep favicons and meta images in `public/meta-assets/`.
+* **Upload:** ALWAYS use the `media-assets` Vite plugin via `npm run build`/`build:dev`. NEVER upload media from CI.
+* **Env:** `MEDIA_BUCKET` goes in `.env.development`/`.env.production`. `MEDIA_ORIGIN_URL`, `MEDIA_CDN_URL`, `MEDIA_ENDPOINT_URL`, `MEDIA_SYNC` go in `.env`.
+* **Single bucket:** Keep `/media/...` relative. Set `MEDIA_ORIGIN_URL` for dev/preview before the domain is attached; empty falls back to `SITE_URL`. Requires a bucket-backed host/CDN.
+* **Separate CDN:** Set `MEDIA_CDN_URL`; it wins for built URLs and dev proxy. Point `MEDIA_BUCKET` at the media bucket.
+* **Upload target:** Uploads always go to `MEDIA_BUCKET`. `MEDIA_CDN_URL` does not skip them. Use `MEDIA_SYNC=0` to skip.
+* **Media origin:** NEVER hardcode the CDN host or expose the bucket endpoint.
+
+## 7. Documentation
+* **README:** setup, usage, overview.
+* **ARCHITECTURE:** system design and detailed flows.
+* **AGENTS:** implementation rules and guardrails.
+* Do not duplicate explanations across files.

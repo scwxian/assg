@@ -44,7 +44,7 @@ The site is built with "performance-first" as the focus. The goal is to offload 
   2. Run `./init-project.sh` to automatically generates these files:
       * **package.json** is updated with Author and Project Name (based on the name of the directory).
       * **site.config.js** contains everything for your SEO and covers the basic legal pages like ``privacy-policy`` and ``terms-of-use``. Customize them to fit your needs and it will be injected into the HTML.
-      * **All .env.*** contains the usual secrets. Except for VITE_BASE_URL, you need to add these secrets into your CI/CD pipeline if they are needed during your build process. The magic keyword for `.env.development` should be the same as the one that you will use for your dev deployment.
+      * **All .env.*** contains the usual secrets. Except for VITE_BASE_URL, you need to add these secrets into your CI/CD pipeline if they are needed during your build process. The magic keyword for `.env.development` should be the same as the one that you will use for your dev deployment. Fill in the `MEDIA_*` values if you want automatic media uploads.
 
 **Meta assets for SEO** can be generated at [RealFaviconGenerator](https://realfavicongenerator.net/). The other 3 that needs to be created manually are:
 * Logo (logo.png)
@@ -63,7 +63,7 @@ For active development with live reloading, run the following standard command f
 ```bash
 npm install && npm run dev
 ```
-*(Use `npx vite --host` if you want to test on a physical mobile device connected to your network like via USB-C)*
+`npm run dev` binds to all interfaces by default for mobile/LAN testing.
 
 **Alternative: Containerized Dev Server**
 
@@ -75,20 +75,39 @@ docker run --rm -it \
   -v "$(pwd)":/app \
   --workdir /app \
   node:20-alpine \
-  sh -c "npm install && npm run dev -- --host"
+  sh -c "npm install && npm run dev"
   ```
 
 ### Local Build Testing
 
 The `Dockerfile` and `local-build.sh` script are used **exclusively** for testing the production build process locally. Executing `local-build.sh` in root dir will run the full build process to minify and optimize all assets into a final `dist` directory, simulating the CI/CD build.
 
-Then, use any web server of your choice to serve the `dist` dir _(ie: Caddy)_ to simulate a live server and check for any bugs in the final build.
+Then, use any web server of your choice to serve the `dist` dir _(ie: Caddy)_ to simulate a live server and check for any bugs in the final build. Or run `npm run preview` to serve the built output with the same `/media` proxy behavior.
+
+### Asset Handling
+
+Large media (photos, video, fonts) lives in `media/`, which is gitignored. There are **two modes** to choose from for how Asset Handling works for your site.
+
+* **Mode 1: Single bucket (default).** Media lives in the same bucket as the site under `/media/*` and is served by the same host/CDN as the site.
+  * For local dev before any custom domain is attached, set `MEDIA_ORIGIN_URL` to the CDN origin to bypass the custom domain.
+  * Leave it empty to fall back to `SITE_URL` once your custom domain is connected to your CDN.
+  * This mode requires a bucket-backed host/CDN such as AWS CloudFront + S3, Cloudflare R2 + Worker/custom domain, or any S3-compatible bucket behind a host/CDN. It cannot work with static hosts that do not expose bucket paths, such as Netlify or Vercel.
+
+**Mode 2: Separate CDN (simplest).** Set `MEDIA_CDN_URL` (e.g. `https://assets.mydomain.com`), works like any remote CDN.
+* Builds rewrite `/media/...` to that absolute URL. 
+* Works with any site host. Point `MEDIA_BUCKET` at the media bucket for auto-uploads on Vite builds.
+
+Reference assets as `/media/...` in your HTML; never hardcode the CDN host. Local builds upload automatically unless `MEDIA_SYNC=0`; CI and Docker builds need a manual upload. See [Media Pipeline](docs/ARCHITECTURE.md#6-media-pipeline) for setup and upload commands.
+
+> [!WARNING] Note: CDN invalidation clears the edge cache, not browser caches. Replacing a file at the same path may still show stale media to returning visitors. Use a new filename or query string for urgent replacements.
 
 ## 🚀 Deployment
 
 You can deploy with any provider: AWS CloudFront, CloudFlare Workers, Netlify, Vercel, etc — it's totally up to you. The main goal of this project is to generate that final `dist` dir. After that it's just who you fuck with.
 
 Currently, the default CI/CD Pipeline is to have **GitHub Actions** build the project in a clean Ubuntu environment, sync the `dist` folder into a **S3 bucket** served via **CloudFront**, then create a CloudFront invalidation to ensure the changes go live immediately. It's triggered based on any push to *main* or *dev* for dev and prod deployments respectively.
+
+Required for multi-page sites on AWS CloudFront: associate a viewer-request CloudFront Function with the default cache behavior to append `index.html` to extensionless URIs. This handles `/` and clean page URLs on an S3 REST origin. See [CloudFront Deployment Notes](docs/ARCHITECTURE.md#7-cloudfront-deployment-notes).
 
 ### CI/CD
 
