@@ -227,15 +227,18 @@ export function initCarousel(parentElement = document) {
         // 2. Button Event Listeners
         const scrollAmount = () => track.clientWidth; // Dynamic width calculation
 
+        // Autoplay skips synthetic button clicks
+        const goToNext = () => {
+            // If at the end, scroll back to start, otherwise scroll right
+            if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
+                track.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+                track.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+            }
+        };
+
         if (nextButton) {
-            nextButton.addEventListener('click', () => {
-                // If at the end, scroll back to start, otherwise scroll right
-                if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
-                    track.scrollTo({ left: 0, behavior: 'smooth' });
-                } else {
-                    track.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
-                }
-            });
+            nextButton.addEventListener('click', goToNext);
         }
 
         if (prevButton) {
@@ -260,16 +263,16 @@ export function initCarousel(parentElement = document) {
         // 4. Auto-cycle (if data-interval is present)
         if (carousel.dataset.interval) {
             const intervalTime = parseInt(carousel.dataset.interval);
-            let autoCycle = setInterval(() => nextButton.click(), intervalTime);
+            let autoCycle = setInterval(goToNext, intervalTime);
 
             // Pause on hover or touch
             carousel.addEventListener('mouseenter', () => clearInterval(autoCycle));
             carousel.addEventListener('mouseleave', () => {
-                autoCycle = setInterval(() => nextButton.click(), intervalTime);
+                autoCycle = setInterval(goToNext, intervalTime);
             });
             carousel.addEventListener('touchstart', () => clearInterval(autoCycle), { passive: true });
             carousel.addEventListener('touchend', () => {
-                autoCycle = setInterval(() => nextButton.click(), intervalTime);
+                autoCycle = setInterval(goToNext, intervalTime);
             });
         }
     });

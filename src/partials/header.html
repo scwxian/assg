@@ -14,12 +14,33 @@
             </svg>
         </button>
 
-        <div class="nav-links">
-            <nav>
+        <div class="nav-links" data-visible="false">
+            <nav id="primary-navigation">
                 <button class="mobile-nav-close" aria-label="Close menu">&times;</button>
                 <ul>
                     <li><a href="%%BASE_URL%%/about/">About</a></li>
                     <li><a href="%%BASE_URL%%/#services">Services</a></li>
+                    <li class="nav-dropdown" data-dropdown-base="%%BASE_URL%%/dropdown">
+                        <!-- Clickable variant: swap the button below for this anchor.
+                             Desktop click then navigates; mobile click still toggles the menu.
+                        <a href="%%BASE_URL%%/dropdown/" class="nav-dropdown-trigger" data-dropdown-trigger aria-haspopup="true" aria-expanded="false" aria-controls="dropdown-menu">Dropdown</a>
+                        -->
+                        <button
+                            type="button"
+                            class="nav-dropdown-trigger"
+                            data-dropdown-trigger
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            aria-controls="dropdown-menu"
+                        >
+                            Dropdown
+                        </button>
+                        <ul class="nav-dropdown-menu" id="dropdown-menu">
+                            <li><a href="%%BASE_URL%%/link-1/">Link 1</a></li>
+                            <li><a href="%%BASE_URL%%/link-2/">Link 2</a></li>
+                            <li><a href="%%BASE_URL%%/link-3/">Link 3</a></li>
+                        </ul>
+                    </li>
                     <li><a href="%%BASE_URL%%/#contact">Contact</a></li>
                     <li><a class="nav-cta-button" href="https://example.com">Click Me</a></li>
                 </ul>
@@ -46,6 +67,8 @@
         </div>
     </div>
     <button id="scrollToTop" title="Go to top">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true" shape-rendering="crispEdges" viewBox="0 0 5 3"><path d="M2 0h1v1H2zM1 1h1v1H1zM3 1h1v1H3zM0 2h1v1H0zM4 2h1v1H4z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></svg>
     </button>
+
+    <div id="nav-backdrop" class="nav-backdrop"></div>
 </header>

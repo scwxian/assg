@@ -15,25 +15,30 @@ initPersistent();
 
 // --- Nav Active State Updater ---
 function updateNavActiveState() {
-    const currentPath = window.location.pathname;
+    const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
     const navLinks = document.querySelectorAll('header nav a');
 
     navLinks.forEach(link => {
         const url = new URL(link.href);
 
-        if (url.hash) {
-            link.removeAttribute('aria-current');
-            return;
-        }
+        link.removeAttribute('aria-current');
 
-        const linkPath = url.pathname.replace(/\/$/, '');
-        const activePath = currentPath.replace(/\/$/, '');
+        if (url.hash || link.classList.contains('nav-cta-button')) return;
 
-        if (linkPath === activePath) {
+        const linkPath = url.pathname.replace(/\/$/, '') || '/';
+        const isDropdownTrigger = link.hasAttribute('data-dropdown-trigger');
+        const isSectionMatch = isDropdownTrigger && linkPath !== '/' && currentPath.startsWith(`${linkPath}/`);
+
+        if (linkPath === currentPath || isSectionMatch) {
             link.setAttribute('aria-current', 'page');
-        } else {
-            link.removeAttribute('aria-current');
         }
+    });
+
+    // Non-link triggers rely on data-dropdown-base for highlighting
+    document.querySelectorAll('header .nav-dropdown').forEach(dropdown => {
+        const basePath = (dropdown.dataset.dropdownBase || '').replace(/\/$/, '');
+        const isActive = Boolean(basePath) && (currentPath === basePath || currentPath.startsWith(`${basePath}/`));
+        dropdown.classList.toggle('is-active', isActive);
     });
 }
 
