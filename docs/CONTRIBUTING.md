@@ -22,19 +22,20 @@ Pages are folder-based to ensure clean URLs (e.g., `/contact/index.html` becomes
 1. Create a new folder in `src/` (e.g., `src/contact/`).
 2. Create an `index.html` file inside the new folder.
 3. Use the `<load>` tag to inject the header, meta, and footer partials.
-4. Ensure your main content is wrapped in `<main id="swup" data-page="contact">`.
+4. Wrap your main content in `<main id="swup">`. Never hand-write `data-page`, the build injects it.
+5. Add `js="contact"` to the meta `<load>` only if the page needs its own script. Omit it for pages with no JS.
 
 **Example `src/contact/index.html`:**
 ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <load src="partials/meta.html" href="%%SITE_URL%%/contact" title="Contact Us | %%SITE_NAME%%" page="contact" />
+    <load src="partials/meta.html" href="%%SITE_URL%%/contact" title="Contact Us | %%SITE_NAME%%" css="contact" js="contact" />
 </head>
 <body>
     <load src="/partials/header.html" />
 
-    <main id="swup" data-page="contact">
+    <main id="swup">
         </main>
 
     <load src="/partials/footer.html" />
@@ -49,11 +50,15 @@ Pages are folder-based to ensure clean URLs (e.g., `/contact/index.html` becomes
 
 Because Swup dynamically replaces the DOM, standard `DOMContentLoaded` events only fire once (on the initial load).
 
-If your new page requires specific JavaScript, you **MUST** follow this pattern:
+Page JavaScript is optional. Pages with no script omit the `js` attribute and still get global behavior (nav, animations, lazy modules).
 
-1. Create a JS file matching your page name (e.g., `src/contact/contact.js`).
+If your new page requires specific JavaScript, follow this pattern:
+
+1. Create a JS file matching the id in `js="<id>"` (e.g., `src/contact/contact.js`).
 2. Export a `default` function that initializes your logic.
 3. **CRITICAL:** That default function **MUST return a cleanup function** to remove event listeners and destroy instances when the user navigates away. If you skip this, you will create massive memory leaks.
+
+**Sharing one script across pages:** give both pages the same `js="<id>"` and store it once, either next to one page or in a shared parent folder (e.g., `src/offerings/offerings.js`). If a same-named file also exists next to a page, that local file wins for that page.
 
 **Example `src/contact/contact.js`:**
 

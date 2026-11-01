@@ -10,6 +10,7 @@ import injectHTML from 'vite-plugin-html-inject'
 import { mediaAssets } from "./custom-vite-plugins/media-assets.js";
 import { sitemapGenerator } from "./custom-vite-plugins/sitemap-generator.js";
 import { siteConfigInjector } from "./custom-vite-plugins/site-config-injector.js";
+import { pageAssets } from "./custom-vite-plugins/page-assets.js";
 import { getHtmlEntries } from './custom-vite-plugins/html-entry-finder.js';
 import { staticDataBuilder } from "./custom-vite-plugins/static-data-builder.js";
 import { injections } from "./custom-vite-plugins/static-data-injections.config.js";
@@ -73,6 +74,7 @@ export default defineConfig(({ mode, command }) => {
       mediaAssets(env, mode),
       json5ClientLoader(),
       staticDataBuilder(injections),
+      pageAssets(srcRoot), // Must precede injectHTML to read <load> attrs
       injectHTML(),
       siteConfigInjector(env, siteConfig),
       sitemapGenerator(siteConfig, srcRoot, htmlPages),

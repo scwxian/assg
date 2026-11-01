@@ -9,6 +9,8 @@ Repo guardrails for coding agents. Setup lives in `readme.md`; system design liv
 ## 2. Frontend Rules
 * **Component Paradigm:** ALWAYS use semantic HTML with `vite-plugin-html-inject` (`<load src="..." />`) for reusable partials. NEVER use client-side rendering for layout components.
 * **Styling:** ALWAYS use native, modular CSS imported into `styles.css`. NEVER use Tailwind, Bootstrap, or CSS-in-JS. ALWAYS utilize CSS variables (`var(--theme-color)`) defined in `theme.css` for styling.
+* **Page Assets:** ALWAYS declare page CSS/JS as optional ids on the meta load (`css="<id>"`, `js="<id>"`). NEVER hand-write `data-page` on `<main>` or a page `<link>`/`<script>`; the build generates both. Omit the attr when a page has none — never create stub files.
+* **Composing Page Assets:** ALWAYS `@import "/css/..."` in the page CSS file, or `import` in the page JS entry, for extra files. NEVER add a second page stylesheet or a `<script>` tag to page HTML; Swup replaces `#swup`, so body scripts re-run without cleanup.
 * **Performance/Hydration:** ALWAYS lazy-load interactive JavaScript modules. NEVER attach heavy scripts directly to the initial page load. ALWAYS use `data-lazy-module="module-name"` and rely on `main.js`'s `IntersectionObserver` to trigger execution.
 * **Page Transitions:** ALWAYS structure page-specific JS to return a cleanup function. NEVER leave stray event listeners when Swup replaces the `#swup` container.
 

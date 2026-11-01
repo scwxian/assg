@@ -6,11 +6,16 @@ import { initPersistent, initPage } from './main.js';
 // --- Global State ---
 let currentPageCleanup = null;
 let currentObserver = null;
-const pageModules = import.meta.glob([
-    '../*.js', 
-    '../*/*.js',
-    '!./main.js'
-]);
+// Page modules live anywhere except js/
+const pageModules = import.meta.glob(['../**/*.js', '!../js/**']);
+
+// Index by id so depth and directory don't matter
+const pageModuleIndex = Object.keys(pageModules).reduce((index, key) => {
+    const id = key.split('/').pop().replace(/\.js$/, '');
+    (index[id] ||= []).push(key);
+    return index;
+}, {});
+
 initPersistent();
 
 // --- Nav Active State Updater ---
@@ -42,6 +47,20 @@ function updateNavActiveState() {
     });
 }
 
+// Prefer page's own dir, fall back to shared module
+function resolvePageModule(pageIdentifier) {
+    const pageDir = window.location.pathname.replace(/^\/|\/$/g, '');
+    const candidates = pageModuleIndex[pageIdentifier] || [];
+
+    if (candidates.length > 1) {
+        console.debug(`[Page JS] Multiple modules for "${pageIdentifier}":`, candidates);
+    }
+
+    return candidates.find((key) => key === `../${pageDir}/${pageIdentifier}.js`)
+        || candidates[0]
+        || null;
+}
+
 // --- Mount/Unmount Logic ---
 async function mountPage() {
 
@@ -50,28 +69,23 @@ async function mountPage() {
     currentObserver = initPage();
 
     // Run page-specific logic
-    const pageIdentifier = document.getElementById('swup')?.dataset.page;
-    if (!pageIdentifier) return;
+    const pageIdentifier = (document.getElementById('swup')?.dataset.page || '').trim();
     currentPageCleanup = null;
+    if (!pageIdentifier) return;
 
-    const matchPath = Object.keys(pageModules).find((path) =>
-        path.endsWith(`/${pageIdentifier}.js`)
-    );
+    const moduleKey = resolvePageModule(pageIdentifier);
+    if (!moduleKey) return;
 
-    if (matchPath) {
-        try {
-            const module = await pageModules[matchPath]();
+    try {
+        const module = await pageModules[moduleKey]();
 
-            if (typeof module.default === 'function') {
-                currentPageCleanup = module.default();
-            } else {
-                console.warn(`[Router] Page script found for "${pageIdentifier}" but no default export function provided.`);
-            }
-        } catch (error) {
-            console.error(`[Router] Error loading script for page: ${pageIdentifier}`, error);
+        if (typeof module.default === 'function') {
+            currentPageCleanup = module.default();
+        } else {
+            console.warn(`[Router] Page script found for "${pageIdentifier}" but no default export function provided.`);
         }
-    } else {
-        console.warn(`[Page JS] No specific script found for page: ${pageIdentifier}`)
+    } catch (error) {
+        console.error(`[Router] Error loading script for page: ${pageIdentifier}`, error);
     }
 }
 

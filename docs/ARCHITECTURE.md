@@ -14,7 +14,7 @@
 ```text
 /
 ├── /.github                # CI/CD deployment workflows
-├── /custom-vite-plugins    # Build-time injection, generation & media sync
+├── /custom-vite-plugins    # Build-time injection, generation, page assets & media sync
 ├── /media                  # Local-only large media (uploaded to bucket)
 ├── /public                 # Static meta & SEO assets
 └── /src                    # Source code
@@ -22,7 +22,7 @@
     ├── /css                # Modular CSS (foundation, layouts, modules)
     ├── /js                 # Global logic, routing, lazy modules
     ├── /partials           # Reusable HTML fragments
-    └── /[page-name]        # Page-specific HTML, CSS, and JS
+    └── /[page-name]        # Page HTML + optional page CSS/JS
 
 ```
 
@@ -37,7 +37,22 @@
 1. **Trigger:** User clicks a navigation link.
 2. **Validation:** Swup.js intercepts the click, preventing a hard browser reload, and verifies the route.
 3. **Execution:** Swup fetches the new HTML payload, animates the transition, and replaces the content of the `#swup` container.
-4. **Resolution:** `app.js` triggers the unmount hook for the old page's JavaScript (running returned cleanup functions), updates the navigation active states, and mounts the new page's specific JS and `IntersectionObservers` for lazy-loading.
+4. **Resolution:** `app.js` runs the old page's cleanup, updates nav state, then mounts global behaviour plus the new page's optional JS and `IntersectionObserver`s. Page CSS was already chosen at build time by `pageAssets()`.
+
+### Page Assets (Optional)
+
+Page CSS and JS are ids on the meta `<load>`, without extension. Both are optional.
+
+| Asset | Resolved by | Indexed from | Ignored |
+|---|---|---|---|
+| CSS | `pageAssets()` at build | `src/**/*.css`, filename stem | — |
+| JS | `app.js` at runtime | `src/**/*.js`, filename stem | `src/js/**` |
+
+* Same-id file in the page's own directory wins over a shared file elsewhere; `/`-prefixed ids (`css="/css/modules/x"`) resolve from `src` directly.
+* No id means no asset: no `<link>` is emitted (so Swup's `awaitAssets` never waits on a 404), no `data-page` is written, and only global behaviour runs.
+* Build output: `<link href="/assets/<name>-<hash>.css">` as the last head tag (after `styles.css`, so page CSS wins) and `data-page="<id>"` on `<main id="swup">`. Both generated.
+* One id can serve many pages; CSS is emitted once and cached across them.
+* Page JS exports `init()` and returns a cleanup function; cleanup runs on `content:replace`.
 
 ## 5. External Integrations
 

@@ -19,15 +19,16 @@ The site is built with "performance-first" as the focus. The goal is to offload 
 
 * **SPA-like Navigation (Swup.js)**:
   * Implemented via `app.js`, the site uses **Swup** to handle seamless page transitions without full reloads.
-  * The logic is split into a global `main.js` (for persistent elements like the nav) and dynamically imported page scripts (e.g., `home.js`, `about.js`) that are only loaded and initialized when the specific page is viewed.
+  * The logic is split into a global `main.js` (for persistent elements like the nav) and dynamically imported page scripts declared by id (`js="about"`, optional and shareable across pages) that are only loaded and initialized when the specific page is viewed.
 * **Component-Based Composition**:
   * **HTML**: Uses `vite-plugin-html-inject` to manage reusable partials (Header, Footer, Meta) at build time.
-  * **CSS**: Styles are modularized. Global styles are shared and imported via `styles.css`, while page-specific CSS is dynamically injected via the meta partial, ensuring the browser only parses styles relevant to the current page.
+  * **CSS**: Styles are modularized. Global styles are imported via `styles.css`; page-specific CSS is declared per page (`css="about"`) and resolved at build time, so pages without custom styles ship no extra stylesheet.
   * **JS & Lazy-Loaded "Hydration"**: Interactive components—such as the Instagram feed or About page stat bars—are stored in `js/modules`. Using an `IntersectionObserver` in `main.js`, these modules are strictly **lazy-loaded**; the JavaScript is fetched and executed only when the user scrolls the component into view, keeping the initial page load extremely lightweight.
 
 * **Automated Vite Build Pipeline**: A suite of custom and standard plugins automates the static site generation:
   * **`html-entry-finder`**: Recursively detects all `index.html` files to build the Rollup input options automatically.
   * **`static-data-builder`** and **`static-data-injections`**: Explicitly list data sources to build out the html partials and inject into any page, accepts JSON & JSON5.
+  * **`page-assets`**: Resolves the optional `css`/`js` ids from the meta partial; drops missing assets instead of shipping 404s.
   * **`html-minifier`**: Compresses the final HTML output for dat page speed score.
 
 * **Centralized Configuration and SEO Assets (`site.config.js`)**:
@@ -83,6 +84,17 @@ docker run --rm -it \
 The `Dockerfile` and `local-build.sh` script are used **exclusively** for testing the production build process locally. Executing `local-build.sh` in root dir will run the full build process to minify and optimize all assets into a final `dist` directory, simulating the CI/CD build.
 
 Then, use any web server of your choice to serve the `dist` dir _(ie: Caddy)_ to simulate a live server and check for any bugs in the final build. Or run `npm run preview` to serve the built output with the same `/media` proxy behavior.
+
+### Adding a Page
+
+Create `src/<page>/index.html` (or `src/<page>.html` at root) and point the meta partial at it. `css` and `js` are optional ids matching a filename stem:
+
+```html
+<load src="partials/meta.html" href="%%SITE_URL%%/about" title="..." description="..."
+      css="about" js="about" />
+```
+
+Omit either attr for a page with no custom CSS/JS — nothing is emitted and only global behaviour runs. Never add `data-page`, page `<link>` or `<script>` tags; the build generates them. See [Page Assets](docs/ARCHITECTURE.md#page-assets-optional).
 
 ### Asset Handling
 
