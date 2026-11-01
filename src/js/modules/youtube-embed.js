@@ -1,5 +1,4 @@
 'use strict';
-import "../../css/modules/youtube-embed.css";
 
 export default function init(element) {
     const videoId = element.dataset.videoId;

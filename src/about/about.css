@@ -1,4 +1,7 @@
 @import "../css/section-layouts/card.css";
 @import "../css/section-layouts/tab.css";
 @import "../css/section-layouts/grid.css";
-@import "../css/modules/timeline.css"
+@import "../css/modules/timeline.css";
+@import "/css/modules/insta-feed.css";
+@import "/css/modules/stat-bars.css";
+@import "/css/modules/youtube-embed.css";

@@ -1,5 +1,4 @@
 'use strict';
-import "../../css/modules/insta-feed.css";
 
 const BEHOLD_JSON_URL = import.meta.env.VITE_INSTAGRAM_FEED_URL;
 
