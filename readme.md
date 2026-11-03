@@ -28,7 +28,7 @@ The site is built with "performance-first" as the focus. The goal is to offload 
 * **Automated Vite Build Pipeline**: A suite of custom and standard plugins automates the static site generation:
   * **`html-entry-finder`**: Recursively detects all `index.html` files to build the Rollup input options automatically.
   * **`static-data-builder`** and **`static-data-injections`**: Explicitly list data sources to build out the html partials and inject into any page, accepts JSON & JSON5.
-  * **`page-assets`**: Resolves the optional `css`/`js` ids from the meta partial; drops missing assets instead of shipping 404s.
+  * **`page-assets`**: Resolves the optional `css`/`js` ids from the initial <load> meta partial, missing or incorrect file names are dropped.
   * **`html-minifier`**: Compresses the final HTML output for dat page speed score.
 
 * **Centralized Configuration and SEO Assets (`site.config.js`)**:
@@ -42,7 +42,7 @@ The site is built with "performance-first" as the focus. The goal is to offload 
 * **Initial Setup**:
   1. Clone the repo and rename it to your site's domain name _(example.com)_
   2. Chmod the initialization script `chmod +x init-project.sh`
-  2. Run `./init-project.sh` to automatically generates these files:
+  3. Run `./init-project.sh` to automatically generates these files:
       * **package.json** is updated with Author and Project Name (based on the name of the directory).
       * **site.config.js** contains everything for your SEO and covers the basic legal pages like ``privacy-policy`` and ``terms-of-use``. Customize them to fit your needs and it will be injected into the HTML.
       * **All .env.*** contains the usual secrets. Except for VITE_BASE_URL, you need to add these secrets into your CI/CD pipeline if they are needed during your build process. The magic keyword for `.env.development` should be the same as the one that you will use for your dev deployment. Fill in the `MEDIA_*` values if you want automatic media uploads.
@@ -87,7 +87,7 @@ Then, use any web server of your choice to serve the `dist` dir _(ie: Caddy)_ to
 
 ### Adding a Page
 
-Create `src/<page>/index.html` (or `src/<page>.html` at root) and point the meta partial at it. `css` and `js` are optional ids matching a filename stem:
+Create `src/<page>/index.html`, `css` and `js` are optional ids matching the same filename *(co-locating them in same dir is preferred, but you can also put them in another dir, it resolves from src, e.g. `css="/css/modules/x"`)*:
 
 ```html
 <load src="partials/meta.html" href="%%SITE_URL%%/about" title="..." description="..."

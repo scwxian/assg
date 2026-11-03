@@ -39,7 +39,7 @@
 3. **Execution:** Swup fetches the new HTML payload, animates the transition, and replaces the content of the `#swup` container.
 4. **Resolution:** `app.js` runs the old page's cleanup, updates nav state, then mounts global behaviour plus the new page's optional JS and `IntersectionObserver`s. Page CSS was already chosen at build time by `pageAssets()`.
 
-### Page Assets (Optional)
+### Page Assets
 
 Page CSS and JS are ids on the meta `<load>`, without extension. Both are optional.
 
