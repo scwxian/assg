@@ -32,7 +32,10 @@ jobs:
         run: npm run build
       # Step 4: Deploy the 'dist' folder to the S3 bucket
       - name: Deploy to S3
-        run: aws s3 sync ./dist ${{ secrets.S3_BUCKET_PROD }} --delete --exclude "media/*"
+        run: |
+          bucket="${{ secrets.S3_BUCKET_PROD }}"
+          case "$bucket" in s3://*) ;; *) bucket="s3://$bucket" ;; esac
+          aws s3 sync ./dist "$bucket" --delete --exclude "media/*"
       # Step 5: Invalidate the CloudFront cache
       - name: Invalidate CloudFront
         # "/*" also covers "/media/*"

@@ -72,16 +72,17 @@ Sitemap: ${baseUrl}/sitemap.xml
       const webManifest = `{
   "name": "${siteName}",
   "short_name": "${siteName}",
-  "start_url": "/",
+  "start_url": ".",
+  "scope": ".",
   "icons": [
     {
-      "src": "/meta-assets/web-app-manifest-192x192.png",
+      "src": "meta-assets/web-app-manifest-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/meta-assets/web-app-manifest-512x512.png",
+      "src": "meta-assets/web-app-manifest-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"

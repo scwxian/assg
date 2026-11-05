@@ -25,7 +25,7 @@ try {
 
 export default defineConfig(({ mode, command }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  const srcRoot = resolve(__dirname, 'src');
+  const srcRoot = resolve(import.meta.dirname, 'src');
   const htmlPages = getHtmlEntries(srcRoot);
 
   // MEDIA_CDN_URL wins for build output and dev proxy.
@@ -96,8 +96,8 @@ export default defineConfig(({ mode, command }) => {
         output: {
           minify: {
             compress: {
-              drop_console: true,
-              drop_debugger: true
+              dropConsole: true,
+              dropDebugger: true
             }
           }
         }
