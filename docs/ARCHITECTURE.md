@@ -93,27 +93,9 @@ Mode 2: /media/* -> MEDIA_CDN_URL -> media bucket /media/*
 * `MEDIA_ORIGIN_URL` is used when `MEDIA_CDN_URL` is empty.
 * Auto-uploads always target `MEDIA_BUCKET`. `MEDIA_CDN_URL` does not disable auto-uploads. To disable, set `MEDIA_SYNC=0`.
 
-## 7. CloudFront Deployment Notes
+## 7. CloudFront Deployment
 
-Required for multi-page sites on AWS CloudFront. An S3 REST origin does not serve `index.html` automatically. Associate this viewer-request CloudFront Function with the default cache behavior.
+AWS-specific setup lives in [CloudFront Deployment](cloudfront-deployment.md).
 
-```js
-function handler(event) {
-    var request = event.request;
-    var uri = request.uri;
+It covers canonical host redirect, trailing slash normalization, index fallback, function association, custom error responses, ACM, alternate domain names, and DNS.
 
-    if (!uri.includes('.')) {
-        if (uri.endsWith('/')) {
-            request.uri = uri + 'index.html';
-        } else {
-            request.uri = uri + '/index.html';
-        }
-    }
-
-    return request;
-}
-```
-
-The dot check leaves `/media/*.jpg`, `/css/*.css`, and similar assets untouched. This makes DefaultRootObject unnecessary. Keep S3 Block Public Access enabled and grant CloudFront access through OAC and the bucket policy. CI invalidates the distribution after each deploy.
-
-This section is AWS-specific; the media pipeline only needs an HTTP origin serving `/media/*`.

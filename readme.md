@@ -120,7 +120,8 @@ You can deploy with any provider: AWS CloudFront, CloudFlare Workers, Netlify, V
 
 Currently, the default CI/CD Pipeline is to have **GitHub Actions** build the project in a clean Ubuntu environment, sync the `dist` folder into a **S3 bucket** served via **CloudFront**, then create a CloudFront invalidation to ensure the changes go live immediately. It's triggered based on any push to *main* or *dev* for dev and prod deployments respectively.
 
-Required for multi-page sites on AWS CloudFront: associate a viewer-request CloudFront Function with the default cache behavior to append `index.html` to extensionless URIs. This handles `/` and clean page URLs on an S3 REST origin. See [CloudFront Deployment Notes](docs/ARCHITECTURE.md#7-cloudfront-deployment-notes).
+Required for multi-page sites on AWS CloudFront: associate a viewer-request CloudFront Function with the default cache behavior for canonical host, trailing slash, and `index.html` fallback. See [CloudFront Deployment](docs/cloudfront-deployment.md).
+
 
 ### CI/CD
 
