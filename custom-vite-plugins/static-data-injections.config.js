@@ -62,7 +62,7 @@ export const injections = [
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "name": "FAQ | %%SITE_NAME%%",
-        "url": "%%SITE_URL%%/faq",
+        "url": "%%SITE_URL%%/faq/",
         "description": "FAQ Description",
         "mainEntity": allQuestions
       };

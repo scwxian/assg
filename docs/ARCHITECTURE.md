@@ -54,12 +54,26 @@ Page CSS and JS are ids on the meta `<load>`, without extension. Both are option
 * One id can serve many pages; CSS is emitted once and cached across them.
 * Page JS exports `init()` and returns a cleanup function; cleanup runs on `content:replace`.
 
-## 5. External Integrations
+## 5. Canonical URLs
+
+ASSG uses one URL shape for every page: **main URL + trailing slash** (e.g. `https://example.com/about/`).
+
+Your main URL is the address the site is served from. It can be a root domain (`example.com`) or a subdomain (`app.example.com`).
+
+* `SITE_URL` in `site.config.js` is your main URL (`https://example.com` or `https://app.example.com`), without `www` or a trailing slash. The injector strips a trailing slash if present.
+* Page URLs should end with `/`: `/`, `/about/`, `/blog/post/`.
+* Files should keep their extension: `/sitemap.xml`, `/media/...`, `/assets/...`.
+* A page's `<load href>` feeds `<link rel="canonical">`, `og:url`, and `twitter:url`. Use the same URL for JSON-LD `url` and `@id`.
+* Internal links use the slash form. A `www` or slashless URL reaches the page through a 301, not as the canonical URL.
+* `sitemap-generator.js` emits the same trailing-slash URLs, including root `/`.
+* The CloudFront viewer-request function enforces the policy: it removes a leading `www.` and redirects slashless paths to their slash form. This works for root domains and subdomains. See [CloudFront Deployment](cloudfront-deployment.md).
+
+## 6. External Integrations
 
 * **AWS S3 & CloudFront:** Automated static hosting and cache invalidation -> Handled in `/.github/workflows/deploy.yml` and `dev-deploy.yml`.
 * **Behold (Instagram API):** Fetches the latest Instagram posts -> Handled in `/src/js/modules/insta-feed.js` (triggered via `VITE_INSTAGRAM_FEED_URL`).
 
-## 6. Media Pipeline
+## 7. Media Pipeline
 
 * **Source:** Large media lives in `/media/`, is gitignored, and never enters the Vite graph. Reference it as `/media/...`, never hardcode the CDN host such as `https://assets.mydomain.com/media/...`.
 * **Auto upload on local build:** Local `npm run build` / `build:dev` runs `aws s3 sync ./media s3://$MEDIA_BUCKET/media --endpoint-url $MEDIA_ENDPOINT_URL` before Vite.
@@ -93,27 +107,9 @@ Mode 2: /media/* -> MEDIA_CDN_URL -> media bucket /media/*
 * `MEDIA_ORIGIN_URL` is used when `MEDIA_CDN_URL` is empty.
 * Auto-uploads always target `MEDIA_BUCKET`. `MEDIA_CDN_URL` does not disable auto-uploads. To disable, set `MEDIA_SYNC=0`.
 
-## 7. CloudFront Deployment Notes
+## 8. CloudFront Deployment
 
-Required for multi-page sites on AWS CloudFront. An S3 REST origin does not serve `index.html` automatically. Associate this viewer-request CloudFront Function with the default cache behavior.
+AWS-specific setup lives in [CloudFront Deployment](cloudfront-deployment.md).
 
-```js
-function handler(event) {
-    var request = event.request;
-    var uri = request.uri;
+It implements the canonical URL policy in section 5, plus index fallback, function association, custom error responses, ACM, alternate domain names, and DNS.
 
-    if (!uri.includes('.')) {
-        if (uri.endsWith('/')) {
-            request.uri = uri + 'index.html';
-        } else {
-            request.uri = uri + '/index.html';
-        }
-    }
-
-    return request;
-}
-```
-
-The dot check leaves `/media/*.jpg`, `/css/*.css`, and similar assets untouched. This makes DefaultRootObject unnecessary. Keep S3 Block Public Access enabled and grant CloudFront access through OAC and the bucket policy. CI invalidates the distribution after each deploy.
-
-This section is AWS-specific; the media pipeline only needs an HTTP origin serving `/media/*`.

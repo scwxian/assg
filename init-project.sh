@@ -14,6 +14,7 @@ echo "📝 Creating .env files..."
 cat >site.config.js <<EOF
 export default {
   // Basic SEO & Identity
+  // Main site URL only.
   SITE_URL: "https://mysite.com",
   SITE_NAME: "My New Site",
   SITE_DESC: "My Site Description",
@@ -37,8 +38,8 @@ cat >.env <<EOF
 VITE_INSTAGRAM_FEED_URL=
 
 # Optional. Single-bucket media origin for local dev/preview.
-# Use the CDN distribution hostname until the custom domain is attached.
-# Leave empty to fall back to SITE_URL (your custom domain).
+# Use the CDN distribution hostname until your custom domain is attached.
+# Leave empty to fall back to SITE_URL (your main URL).
 MEDIA_ORIGIN_URL=
 
 # Optional. Public media root. When set, media reads and build URLs use this

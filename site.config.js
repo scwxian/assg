@@ -1,5 +1,6 @@
 export default {
   // Basic SEO & Identity
+  // Main site URL only.
   SITE_URL: "https://mysite.com",
   SITE_NAME: "My New Site",
   SITE_DESC: "My Site Description",

@@ -33,7 +33,7 @@ export function sitemapGenerator(config, srcRoot, htmlPages) {
         
         sitemapLinks += `
   <url>
-    <loc>${baseUrl}${route ? '/' + route : ''}</loc>
+    <loc>${baseUrl}${route ? '/' + route + '/' : '/'}</loc>
     <lastmod>${today}</lastmod>
     <priority>${priority}</priority>
   </url>`;
